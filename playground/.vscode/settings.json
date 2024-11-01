@@ -5,10 +5,8 @@
   },
   "editor.fontSize": 20,
   "files.autoSave": "onFocusChange",
-  "rust-analyzer.check.command": "clippy",
   "rust-analyzer.checkOnSave": true,
   "terminal.integrated.fontSize": 20,
   "workbench.panel.defaultLocation": "right",
   "window.zoomLevel": 0,
-  
 }
