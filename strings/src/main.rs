@@ -1,4 +1,4 @@
-use std::{fmt, io};
+use std::io;
 
 fn make_money(input: &mut String) {
     input.push_str("$$$");
