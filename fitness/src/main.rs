@@ -12,6 +12,6 @@ fn main() {
     println!("{:#?}", weight_ex);
     
     let workout = GymWorkout::new(cardio_ex, weight_ex);
-    println!("{:?}", workout);
+    println!("{:#?}", workout);
 
 }
