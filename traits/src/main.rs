@@ -1,42 +1,32 @@
-use std::collections::HashMap;
+mod challenge;
+use challenge::{Coffee, Milk};
 
-trait Accommodation {
-    fn get_description(&self);
-    fn book(&mut self, guest_name:String, nights: u32);
-}
-
-#[derive(Debug)]
-struct Hotel {
-    name: String,
-    reservations: std::collections::HashMap<String, u32>,
-}
-
-impl Hotel {
-    fn new(name: String) -> Self {
-        Self {
-            name: name, 
-            reservations: HashMap::new(),
-        }
-    }
-}
-
-impl Accommodation for Hotel {
-    fn get_description(&self) {
-        println!("Welcome to the hotel {}", self.name);
-    }
-
-    fn book(&mut self, guest_name:String, nights: u32) {
-        self.reservations.insert(guest_name, nights);
-    }
-}
-
+use traits::lodging::{Accommodation, AirBnB, Description, Hotel};
+use traits::utils;
 
 fn main() {
 
-    let mut hotel = Hotel::new("Reddisson".to_string());
-    hotel.get_description();
-    hotel.book(String::from("Dave"), 2);
+    let mut hotel = Hotel::new("Reddisson");
+    println!("{}",hotel.get_description());
+    hotel.book("Dave", 2);
+    utils::book_for_one_night(&mut hotel, "George");
+    
+
+
+    let mut airBnB = AirBnB::new("Peter");
+    println!("{}",airBnB.get_description());
+    airBnB.book("Tom", 2);
+    utils::book_for_one_night(&mut airBnB, "Maya");
+    
+
+    utils::mix_and_match(&mut hotel, &mut airBnB, "Alex");
+
+    // dynamic binding example
+    // if underline methods are mutating we pass the mutable ref as "&mut dyn"
+    let stays: Vec<&dyn Description> = vec![&hotel, &airBnB];
+    println!("dyn-> {}", stays[0].get_description());
+    println!("dyn-> {}", stays[1].get_description());
 
     println!("{hotel:#?}");
-
+    println!("{airBnB:#?}");
 }
