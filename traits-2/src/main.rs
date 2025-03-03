@@ -1,18 +1,15 @@
 
-trait Investment {
+trait Investment<T> {
     //getter method
-    fn get_amount(&self) -> f64;
+    fn get_amount(&self) -> T;
 
     //setter
-    fn set_amount(&mut self, amount: f64);
+    fn set_amount(&mut self, amount: T);
 
-    //utilizing setter and getter both to gain access to state data of the object
-    fn double_amount(&mut self) {
-        self.set_amount(self.get_amount() * 2.0); 
-    }
+    fn double_amount(&mut self);
 }
 
-trait Taxable: Investment{
+trait Taxable: Investment<f64>{
     const TAX_RATE: f64 = 0.2;
     
     fn tax_bill(&self) -> f64 {
@@ -32,16 +29,20 @@ struct Bonus {
 
 #[derive(Debug)]
 struct QualityTime {
-    hours: f64
+    hours: u32
 }
 
-impl Investment for Income {
+impl Investment<f64> for Income {
     fn get_amount(&self) -> f64 {
         self.amount
     }
     
-    fn set_amount(&mut self, new_value: f64) {
+    fn set_amount(&mut self, new_value:f64) {
         self.amount = new_value;
+    }
+
+    fn double_amount(&mut self) {
+        self.amount *= 2.0;
     }
 }
 
@@ -50,13 +51,17 @@ impl Taxable for Income {
 }
 
 
-impl Investment for Bonus {
+impl Investment<f64> for Bonus {
     fn get_amount(&self) -> f64 {
         self.value
     }
 
     fn set_amount(&mut self, new_value: f64) {
         self.value = new_value;
+    }
+
+    fn double_amount(&mut self) {
+        self.value *= 2.0
     }
 }
 
@@ -65,13 +70,17 @@ impl Taxable for Bonus {
 
 }
 
-impl Investment for QualityTime {
-    fn get_amount(&self) -> f64 {
+impl Investment<u32> for QualityTime {
+    fn get_amount(&self) -> u32 {
         self.hours
     }
 
-    fn set_amount(&mut self, new_value: f64) {
+    fn set_amount(&mut self, new_value: u32) {
         self.hours = new_value;
+    }
+
+    fn double_amount(&mut self) {
+        self.hours *= 2;
     }
 }
 
@@ -90,9 +99,9 @@ fn main() {
     let tax_due = bonus.tax_bill();
     println!{"{tax_due:.2} tax is due for your {:?}", bonus};
 
-    let mut weekend = QualityTime { hours: 5.0};
-    weekend.double_amount();
-    println!{"Weekend fun time in hours {:?}", weekend};
+    let mut rust_programming_time = QualityTime { hours: 5000};
+    rust_programming_time.double_amount();
+    println!{"Rust prgramming time in hours {:?}", rust_programming_time};
 
 
 }
