@@ -1,5 +1,6 @@
 use std::fmt::{Debug, Display, Formatter, Result};
-
+use std::fs;
+use std::ops::Drop;
 
 enum AppleType {
     GrannySmith,
@@ -9,6 +10,17 @@ enum AppleType {
 struct Apple {
     kind: AppleType,
     price: f64
+}
+
+// drop function implementation will be called automatically when objects go out of scope.
+impl Drop for Apple {
+    fn drop(&mut self) {
+        println!("Drop function called for {}", self.kind);
+        match fs::remove_file("apple.txt") {
+            Ok(_) => println!("Apple file deleted successfuly!"),
+            Err(error) => eprintln!("Some issue while deleting apple file, {}", error),
+        }
+    }
 }
 
 impl Display for AppleType {
